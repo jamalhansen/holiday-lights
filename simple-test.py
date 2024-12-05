@@ -35,7 +35,7 @@ except ImportError:
 pixel_pin = board.D18
 
 # The number of NeoPixels
-num_pixels = 256
+num_pixels = 290
 
 # The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
 # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
@@ -84,7 +84,8 @@ def solid(color, wait):
 def alternate(color_one, color_two, times, wait):
     for j in range(times):
         for i in range(num_pixels):
-            color = color_one if j % 2 == 0 else color_two
+            anchor = j % 2
+            color = color_one if i % 2 == anchor else color_two
             pixels[i] = color
         pixels.show()
         time.sleep(wait)
