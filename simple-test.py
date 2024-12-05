@@ -1,9 +1,5 @@
-## from https://docs.circuitpython.org/projects/neopixel/en/latest/examples.html
+# Started with: https://docs.circuitpython.org/projects/neopixel/en/latest/examples.html
 
-# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
-# SPDX-License-Identifier: MIT
-
-# Simple test for NeoPixels on Raspberry Pi
 import time
 
 try:
@@ -36,13 +32,10 @@ except ImportError:
                 print(f"Mock NeoPixel: All pixels set to {color}")
             
 
-
-# Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
-# NeoPixels must be connected to D10, D12, D18 or D21 to work.
 pixel_pin = board.D18
 
 # The number of NeoPixels
-num_pixels = 300
+num_pixels = 256
 
 # The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
 # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
@@ -83,31 +76,30 @@ def rainbow_cycle(wait):
         pixels.show()
         time.sleep(wait)
 
+def solid(color, wait):
+    pixels.fill(color)
+    pixels.show()
+    time.sleep(wait)
+
+def alternate(color_one, color_two, times, wait):
+    for j in range(times):
+        for i in range(num_pixels):
+            color = color_one if j % 2 == 0 else color_two
+            pixels[i] = color
+        pixels.show()
+        time.sleep(wait)
+
+    
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
 
 try: 
   while True:
-      # Comment this line out if you have RGBW/GRBW NeoPixels
-      pixels.fill((255, 0, 0))
-      # Uncomment this line if you have RGBW/GRBW NeoPixels
-      # pixels.fill((255, 0, 0, 0))
-      pixels.show()
-      time.sleep(1)
+    solid(RED, 1)
+    solid(GREEN, 1)
+    rainbow_cycle(0.001)
+    alternate(RED, GREEN, 10, 1)
 
-      # Comment this line out if you have RGBW/GRBW NeoPixels
-      pixels.fill((0, 255, 0))
-      # Uncomment this line if you have RGBW/GRBW NeoPixels
-      # pixels.fill((0, 255, 0, 0))
-      pixels.show()
-      time.sleep(1)
-
-      # Comment this line out if you have RGBW/GRBW NeoPixels
-      pixels.fill((0, 0, 255))
-      # Uncomment this line if you have RGBW/GRBW NeoPixels
-      # pixels.fill((0, 0, 255, 0))
-      pixels.show()
-      time.sleep(1)
-
-      rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
 except KeyboardInterrupt:
     print("\nStopping... Happy Holidays!")
     pixels.fill((0, 0, 0))
