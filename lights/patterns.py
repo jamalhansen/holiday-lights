@@ -1,4 +1,5 @@
 import time 
+from lights.config import Color
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -25,26 +26,17 @@ def wheel(pos):
 
 def candycane(pos):
     if pos < 0 or pos > 255:
-        r = g = b = 0
+        return Color.OFF.value
     elif pos < 63:
-        r = 255
-        g = 0
-        b = 0
+        return Color.RED.value
     elif pos < 126:
         pos -= 63
-        r = 255
-        g = int(pos * 4)
-        b = int(pos * 4)
+        return (255, int(pos * 4), int(pos * 4))
     elif pos < 192:
-        r = 255
-        g = 255
-        b = 255
+        return Color.WHITE.value
     else:
         pos -= 192
-        r = 255
-        g = 255 - int(pos * 4)
-        b = 255 - int(pos * 4)
-    return (r, g, b)
+        return (255, 255 - int(pos * 4), 255 - int(pos * 4))
 
 def rainbow_cycle(pix: "NeoPixel", pixel_count: int, wait: float): 
     cycle(pix, pixel_count, wait, wheel)
