@@ -25,24 +25,37 @@ def wheel(pos):
     return (r, g, b)
 
 def candycane(pos):
+    return stripe(pos, Color.RED.value, Color.WHITE.value)
+
+def redgreen(pos):
+    return stripe(pos, Color.RED.value, Color.GREEN.value)
+    
+def stripe(pos, color1, color2):
     if pos < 0 or pos > 255:
-        return Color.OFF.value
-    elif pos < 63:
-        return Color.RED.value
-    elif pos < 126:
-        pos -= 63
-        return (255, int(pos * 4), int(pos * 4))
-    elif pos < 192:
-        return Color.WHITE.value
+        return Color.OFF.value 
+    elif pos < 128:
+        # Smooth transition from color1 to color2
+        factor = pos / 127
+        r = int(color1[0] * (1 - factor) + color2[0] * factor)
+        g = int(color1[1] * (1 - factor) + color2[1] * factor)
+        b = int(color1[2] * (1 - factor) + color2[2] * factor)
+        return (r, g, b)
     else:
-        pos -= 192
-        return (255, 255 - int(pos * 4), 255 - int(pos * 4))
+        # Smooth transition from color2 back to color1
+        factor = (pos - 128) / 127
+        r = int(color2[0] * (1 - factor) + color1[0] * factor)
+        g = int(color2[1] * (1 - factor) + color1[1] * factor)
+        b = int(color2[2] * (1 - factor) + color1[2] * factor)
+        return (r, g, b)
 
 def rainbow_cycle(pix: "NeoPixel", pixel_count: int, wait: float): 
     cycle(pix, pixel_count, wait, wheel)
 
 def candycane_cycle(pix: "NeoPixel", pixel_count: int, wait: float): 
     cycle(pix, pixel_count, wait, candycane)
+
+def redgreen_cycle(pix: "NeoPixel", pixel_count: int, wait: float): 
+    cycle(pix, pixel_count, wait, redgreen)
 
 def cycle(pix: "NeoPixel", pixel_count: int, wait: float, pattern: callable): 
     for j in range(255):

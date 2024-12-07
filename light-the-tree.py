@@ -1,5 +1,5 @@
 
-from lights.patterns import rainbow_cycle, solid, alternate, candycane_cycle
+from lights.patterns import rainbow_cycle, solid, alternate, candycane_cycle, redgreen_cycle
 from lights.config import Color
 
 try:
@@ -18,6 +18,7 @@ pixels = neopixel.NeoPixel(
 
 try: 
   while True:
+    redgreen_cycle(pixels, num_pixels, 0.01)
     candycane_cycle(pixels, num_pixels, 0.01)
     solid(pixels, Color.OFF.value, 1)
     rainbow_cycle(pixels, num_pixels, 0.01)
